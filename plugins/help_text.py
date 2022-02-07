@@ -84,11 +84,11 @@ async def upgrade(bot, update):
 async def donate(bot, update):
        await bot.send_message(
              chat_id=update.chat.id,
-             text="I am very happy to listen you this word, making of this bot take lot of work and time so please donate by pressing this button present below",
+             text="I am very happy to listen you this word, making of this bot take lot of work and time so please donate by pressing this button present below  and contact my admin for donation 🥰",
              reply_markup=InlineKeyboardMarkup(
              [
                [
-                 InlineKeyboardButton('Donate 💰', url='http://paypal.me/maheshmalekar')
+                 InlineKeyboardButton('Donate 💰', url='https://t.me/Anshu888o')
                ]
              ]
            )
