@@ -41,7 +41,12 @@ async def generate_custom_thumbnail(bot, update):
     if update.reply_to_message is not None:
         reply_message = update.reply_to_message
         if reply_message.media_group_id is not None:
-            download_location = Config.DOWNLOAD_LOCATION + "/" + str(update.from_user.id) + "/" + str(reply_message.media_group_id) + "/"
+            download_location = (
+                f'{Config.DOWNLOAD_LOCATION}/{str(update.from_user.id)}/'
+                + str(reply_message.media_group_id)
+                + "/"
+            )
+
             save_final_image = download_location + str(round(time.time())) + ".jpg"
             list_im = os.listdir(download_location)
             if len(list_im) == 2:
@@ -96,7 +101,12 @@ async def save_photo(bot, update):
     TRChatBase(update.from_user.id, update.text, "save_photo")
     if update.media_group_id is not None:
         # album is sent
-        download_location = Config.DOWNLOAD_LOCATION + "/" + str(update.from_user.id) + "/" + str(update.media_group_id) + "/"
+        download_location = (
+            f'{Config.DOWNLOAD_LOCATION}/{str(update.from_user.id)}/'
+            + str(update.media_group_id)
+            + "/"
+        )
+
         # create download directory, if not exist
         if not os.path.isdir(download_location):
             os.makedirs(download_location)
@@ -106,7 +116,10 @@ async def save_photo(bot, update):
         )
     else:
         # received single photo
-        download_location = Config.DOWNLOAD_LOCATION + "/" + str(update.from_user.id) + ".jpg"
+        download_location = (
+            f'{Config.DOWNLOAD_LOCATION}/{str(update.from_user.id)}.jpg'
+        )
+
         await bot.download_media(
             message=update,
             file_name=download_location
@@ -128,10 +141,10 @@ async def delete_thumbnail(bot, update):
         )
         return
     TRChatBase(update.from_user.id, update.text, "deletethumbnail")
-    download_location = Config.DOWNLOAD_LOCATION + "/" + str(update.from_user.id)
+    download_location = f'{Config.DOWNLOAD_LOCATION}/{str(update.from_user.id)}'
     try:
-        os.remove(download_location + ".jpg")
-        # os.remove(download_location + ".json")
+        os.remove(f'{download_location}.jpg')
+            # os.remove(download_location + ".json")
     except:
         pass
     await bot.send_message(

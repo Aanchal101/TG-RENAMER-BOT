@@ -54,7 +54,7 @@ async def rename_video(bot, update):
             )
             return
         description = Translation.CUSTOM_CAPTION_UL_FILE
-        download_location = Config.DOWNLOAD_LOCATION + "/"
+        download_location = f'{Config.DOWNLOAD_LOCATION}/'
         b = await bot.send_message(
             chat_id=update.chat.id,
             text=Translation.DOWNLOAD_START,
@@ -97,20 +97,16 @@ async def rename_video(bot, update):
                 duration = metadata.get('duration').seconds
             except:
               pass
-            thumb_image_path = Config.DOWNLOAD_LOCATION + "/" + str(update.from_user.id) + ".jpg"
+            thumb_image_path = f'{Config.DOWNLOAD_LOCATION}/{str(update.from_user.id)}.jpg'
             if not os.path.exists(thumb_image_path):
-               try:
-                    thumb_image_path = await take_screen_shot(new_file_name, os.path.dirname(new_file_name), random.randint(0, duration - 1))
-               except:
-                    thumb_image_path = None
+                try:
+                     thumb_image_path = await take_screen_shot(new_file_name, os.path.dirname(new_file_name), random.randint(0, duration - 1))
+                except:
+                     thumb_image_path = None
             else:
-                width = 0
-                height = 0
                 metadata = extractMetadata(createParser(thumb_image_path))
-                if metadata.has("width"):
-                    width = metadata.get("width")
-                if metadata.has("height"):
-                    height = metadata.get("height")
+                width = metadata.get("width") if metadata.has("width") else 0
+                height = metadata.get("height") if metadata.has("height") else 0
                 # resize image
                 # ref: https://t.me/PyrogramChat/44663
                 # https://stackoverflow.com/a/21669827/4723940
@@ -120,7 +116,7 @@ async def rename_video(bot, update):
                 # img.thumbnail((90, 90))
                 img.resize((320, height))
                 img.save(thumb_image_path, "JPEG")
-                # https://pillow.readthedocs.io/en/3.1.x/reference/Image.html#create-thumbnails
+                            # https://pillow.readthedocs.io/en/3.1.x/reference/Image.html#create-thumbnails
             c_time = time.time()
             await bot.send_video(
                 chat_id=update.chat.id,
